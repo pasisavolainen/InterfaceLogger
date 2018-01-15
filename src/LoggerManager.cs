@@ -1,29 +1,31 @@
-﻿using System;
-using FakeItEasy;
+﻿using FakeItEasy;
 using FakeItEasy.Core;
+using InterfaceLogger.Interfaces;
+using InterfaceLogger.Model;
 
 namespace InterfaceLogger
 {
-    public interface ISink
-    {
-        void Write(string msg);
-    }
     public class LoggerManager
     {
-        public static TInterface Get<TInterface>(ISink sink = null)
-            where TInterface : class
+        public static TLog Get<TLog>(ISink sink = null, IMessageSource messageSource = null)
+            where TLog : class
         {
-            var x = A.Fake<TInterface>();
+            var x = A.Fake<TLog>();
             A.CallTo(x)
-                //.Where(call => call.Method.Name == "Message")
-                .Invokes(call => DoLogging(sink, call));
+                .Invokes(call => DoLogging(call, sink, messageSource ?? GetMessageSource<TLog>()));
 
             return x;
         }
 
-        private static void DoLogging(ISink sink, IFakeObjectCall call)
+        private static IMessageSource GetMessageSource<TLog>() where TLog : class
         {
-            sink.Write(call.Method.Name);
+            return DefaultMessageSource.Instance;
+        }
+
+        private static void DoLogging(IFakeObjectCall call, ISink sink, IMessageSource messageSource)
+        {
+            var msgCfg = messageSource.GetMessageConfiguration(call.Method.Name);
+            sink.Write(msgCfg.Text);
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using InterfaceLogger;
+﻿using System.Collections.Generic;
+using InterfaceLogger.Interfaces;
 
-namespace InterfaceLoggerTests
+namespace InterfaceLoggerTests.Model
 {
-    internal class SimpleSink : ISink
+    internal class TestSimpleSink : ISink
     {
         public List<string> Messages { get; } = new List<string>();
 
