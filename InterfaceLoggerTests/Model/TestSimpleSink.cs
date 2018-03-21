@@ -12,5 +12,10 @@ namespace InterfaceLoggerTests.Model
 
         internal bool HasMessage(string msg)
             => Messages.Contains(msg);
+
+        internal IEnumerable<char> FirstMessage()
+        {
+            return Messages[0];
+        }
     }
 }

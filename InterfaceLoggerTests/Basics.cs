@@ -7,6 +7,7 @@ namespace InterfaceLoggerTests
     public interface IBasicsLog
     {
         void Message();
+        void ParametrizedMessage(int value);
     }
     public class Basics
     {
@@ -41,6 +42,21 @@ namespace InterfaceLoggerTests
             mahLogger.Message();
 
             Assert.True(sink.HasMessage(realmessage));
+        }
+
+        [Fact]
+        public void Parametrization()
+        {
+            var sink = new TestSimpleSink();
+            var msg = "Message {0}";
+            var messageSource = new TestSimpleMessageSource()
+                .MessageText(nameof(IBasicsLog.ParametrizedMessage), msg);
+
+            var testLogger = LoggerManager.Get<IBasicsLog>(sink, messageSource);
+
+            testLogger.ParametrizedMessage(123);
+
+            Assert.Equal("Message 123", sink.FirstMessage());
         }
     }
 }
