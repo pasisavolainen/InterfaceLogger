@@ -4,7 +4,7 @@ namespace InterfaceLogger.Model
 {
     internal class DefaultMessageSource : IMessageSource
     {
-        private static DefaultMessageSource _instance;
+        private static IMessageSource _instance;
 
         public static IMessageSource Instance => _instance ?? (_instance = new DefaultMessageSource());
 

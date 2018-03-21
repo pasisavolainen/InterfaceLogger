@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Resources;
 using FakeItEasy;
 using FakeItEasy.Core;
 using InterfaceLogger.Interfaces;
 using InterfaceLogger.Model;
+using InterfaceLogger.Sources;
 
 namespace InterfaceLogger
 {
@@ -15,14 +17,24 @@ namespace InterfaceLogger
         {
             var x = A.Fake<TLog>();
             A.CallTo(x)
-                .Invokes(call => DoLogging(call, sink, messageSource ?? GetMessageSource<TLog>()));
+                .Invokes(call => DoLogging(call, sink ?? GetSink(),
+                                            messageSource ?? GetMessageSource<TLog>()));
 
             return x;
         }
 
+        public static TLog Get<TLogContext, TLog>(ResourceManager resourceManager)
+            where TLog : class
+            => Get<TLog>(null, new ResXLogSource(resourceManager));
+
         private static IMessageSource GetMessageSource<TLog>() where TLog : class
         {
             return DefaultMessageSource.Instance;
+        }
+
+        private static ISink GetSink()
+        {
+            return DefaultMessageSink.Instance;
         }
 
         private static void DoLogging(IFakeObjectCall call, ISink sink, IMessageSource messageSource)
