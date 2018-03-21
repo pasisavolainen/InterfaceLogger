@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using FakeItEasy;
 using FakeItEasy.Core;
@@ -26,18 +27,26 @@ namespace InterfaceLogger
 
         private static void DoLogging(IFakeObjectCall call, ISink sink, IMessageSource messageSource)
         {
-            var msgCfg = messageSource.GetMessageConfiguration(call.Method.Name);
-            var formattedMsg = msgCfg.Text;
-            var level = msgCfg.Level;
             try
             {
-                formattedMsg = string.Format(msgCfg.Text, call.Arguments.ToArray());
-            } catch(Exception )
+                var msgCfg = messageSource.GetMessageConfiguration(call.Method.Name);
+                var formattedMsg = msgCfg.Text;
+                var level = msgCfg.Level;
+                try
+                {
+                    formattedMsg = string.Format(msgCfg.Text, call.Arguments.ToArray());
+                }
+                catch (Exception)
+                {
+                    // do the needful
+                }
+                //IFormattable abs = $"123 {0}, {call.Arguments[0]}";
+                sink.Write(formattedMsg, level);
+            } catch(Exception e)
             {
-                // do the needful
+                // ok, so one of the components failed.
+                Trace.Write(e);
             }
-            //IFormattable abs = $"123 {0}, {call.Arguments[0]}";
-            sink.Write(formattedMsg, level);
         }
     }
 }
