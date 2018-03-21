@@ -27,7 +27,8 @@ namespace InterfaceLogger
         private static void DoLogging(IFakeObjectCall call, ISink sink, IMessageSource messageSource)
         {
             var msgCfg = messageSource.GetMessageConfiguration(call.Method.Name);
-            string formattedMsg = msgCfg.Text;
+            var formattedMsg = msgCfg.Text;
+            var level = msgCfg.Level;
             try
             {
                 formattedMsg = string.Format(msgCfg.Text, call.Arguments.ToArray());
@@ -36,7 +37,7 @@ namespace InterfaceLogger
                 // do the needful
             }
             //IFormattable abs = $"123 {0}, {call.Arguments[0]}";
-            sink.Write(formattedMsg);
+            sink.Write(formattedMsg, level);
         }
     }
 }

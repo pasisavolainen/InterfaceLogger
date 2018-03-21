@@ -5,5 +5,7 @@ namespace InterfaceLogger.Model
     internal class DefaultMessageConfiguration : IMessageConfiguration
     {
         public string Text { get; internal set; }
+
+        public Level Level { get; internal set; }
     }
 }

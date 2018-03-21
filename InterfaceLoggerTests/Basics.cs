@@ -1,4 +1,5 @@
 ﻿using InterfaceLogger;
+using InterfaceLogger.Interfaces;
 using InterfaceLoggerTests.Model;
 using Xunit;
 
@@ -9,6 +10,7 @@ namespace InterfaceLoggerTests
         void Message();
         void ParametrizedMessage(int value);
     }
+
     public class Basics
     {
         [Fact]
@@ -57,6 +59,38 @@ namespace InterfaceLoggerTests
             testLogger.ParametrizedMessage(123);
 
             Assert.Equal("Message 123", sink.FirstMessage());
+        }
+
+        [Fact]
+        public void ParametrizationBooBoo()
+        {
+            var sink = new TestSimpleSink();
+            var msg = "Message {999}";
+            var messageSource = new TestSimpleMessageSource()
+                .MessageText(nameof(IBasicsLog.ParametrizedMessage), msg);
+
+            var testLogger = LoggerManager.Get<IBasicsLog>(sink, messageSource);
+
+            testLogger.ParametrizedMessage(123);
+
+            Assert.Equal(msg, sink.FirstMessage());
+        }
+
+        [Fact]
+        public void Priority()
+        {
+            var sink = new TestComplexSink();
+            var expectedMessage = "priority test message";
+            var expectedLevel = Level.Fatal;
+            var messageSource = new TestSimpleMessageSource()
+                .MessageText(nameof(IBasicsLog.ParametrizedMessage), expectedMessage, expectedLevel);
+
+            var testLogger = LoggerManager.Get<IBasicsLog>(sink, messageSource);
+
+            testLogger.ParametrizedMessage(123);
+
+            Assert.Equal(expectedMessage, sink.FirstMessage.Text);
+            Assert.Equal(expectedLevel, sink.FirstMessage.Level);
         }
     }
 }

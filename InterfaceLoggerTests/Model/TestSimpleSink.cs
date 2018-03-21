@@ -7,7 +7,7 @@ namespace InterfaceLoggerTests.Model
     {
         public List<string> Messages { get; } = new List<string>();
 
-        public void Write(string msg)
+        public void Write(string msg, Level level)
             => Messages.Add(msg);
 
         internal bool HasMessage(string msg)

@@ -13,9 +13,11 @@ namespace InterfaceLoggerTests.Model
             return val;
         }
 
-        internal TestSimpleMessageSource MessageText(string msg, string realText)
+        internal TestSimpleMessageSource MessageText(string callName, string realText, Level level = Level.Info)
         {
-            GetOrNew(msg).Text = realText;
+            var msg = GetOrNew(callName);
+            msg.Text = realText;
+            msg.Level = level;
             return this;
         }
 

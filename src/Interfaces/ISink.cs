@@ -2,6 +2,6 @@
 {
     public interface ISink
     {
-        void Write(string msg);
+        void Write(string msg, Level level);
     }
 }
