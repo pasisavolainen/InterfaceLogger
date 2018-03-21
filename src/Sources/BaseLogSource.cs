@@ -18,7 +18,8 @@ namespace InterfaceLogger.Sources
                 case "i":
                 case "info": return Level.Info;
                 case "w":
-                case "warn": return Level.Warn;
+                case "warn":
+                case "warning": return Level.Warn;
                 case "e":
                 case "error": return Level.Error;
                 case "f":
