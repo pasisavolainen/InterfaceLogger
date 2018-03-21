@@ -1,4 +1,5 @@
 ﻿using InterfaceLogger;
+using InterfaceLogger.Interfaces;
 using InterfaceLogger.Sources;
 using InterfaceLoggerTests.Model;
 using InterfaceLoggerTests.Properties;
@@ -18,6 +19,19 @@ namespace InterfaceLoggerTests
             logger.Message();
 
             Assert.Equal(Resources.Message, sink.FirstMessage());
+        }
+
+        [Fact]
+        public void ResXUsesLevel()
+        {
+            var sink = new TestComplexSink();
+            var logger = LoggerManager.Get<IBasicsLog>
+                    (sink, ResXLogSource.FromManager(Resources.ResourceManager));
+
+            logger.MessageWithPriority();
+
+            Assert.Equal(Resources.MessageWithPriority, sink.FirstMessage.Text);
+            Assert.Equal(Level.Fatal, sink.FirstMessage.Level);
         }
     }
 }

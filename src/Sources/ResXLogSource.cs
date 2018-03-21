@@ -5,7 +5,7 @@ using InterfaceLogger.Model;
 
 namespace InterfaceLogger.Sources
 {
-    public class ResXLogSource : IMessageSource
+    public class ResXLogSource : BaseLogSource, IMessageSource
     {
         protected ResourceManager RM { get; }
 
@@ -26,7 +26,7 @@ namespace InterfaceLogger.Sources
             return new DefaultMessageConfiguration
             {
                 Text = RM.GetString(name),
-                Level = Level.Info,
+                Level = ResolveLevel(RM.GetString(name + '_')),
             };
         }
     }

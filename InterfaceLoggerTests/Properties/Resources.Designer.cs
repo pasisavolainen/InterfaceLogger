@@ -68,5 +68,23 @@ namespace InterfaceLoggerTests.Properties {
                 return ResourceManager.GetString("Message", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message that has priority set.
+        /// </summary>
+        internal static string MessageWithPriority {
+            get {
+                return ResourceManager.GetString("MessageWithPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FATAL.
+        /// </summary>
+        internal static string MessageWithPriority_ {
+            get {
+                return ResourceManager.GetString("MessageWithPriority_", resourceCulture);
+            }
+        }
     }
 }

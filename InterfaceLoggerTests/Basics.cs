@@ -9,6 +9,7 @@ namespace InterfaceLoggerTests
     {
         void Message();
         void ParametrizedMessage(int value);
+        void MessageWithPriority();
     }
 
     public class Basics
