@@ -36,6 +36,11 @@ var logger = InterfaceLogger.LoggerManager.Get<LogContext, ICustomerLog>(LogReso
 logger.ReceiptReceived(DateTime.UtcNow);
 ```
 
+By default, even if you use ResX message source, *you don't need* to have all messages defined. Fallback
+message text is the name of interface method name. So if `ICustomerLog.PaymentCancelled` is not in resource, 
+the message will be `PaymentCancelled`.
+
+
 # ResX message source
 
 - Messages in resx file should be 1:1 same as they are in the interface.
