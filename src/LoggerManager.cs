@@ -12,6 +12,13 @@ namespace InterfaceLogger
 {
     public class LoggerManager
     {
+        /// <summary>
+        /// Get implementation for logger interface you specify.
+        /// </summary>
+        /// <typeparam name="TLog"></typeparam>
+        /// <param name="sink">Custom sink</param>
+        /// <param name="messageSource">custom message source</param>
+        /// <returns></returns>
         public static TLog Get<TLog>(ISink sink = null, IMessageSource messageSource = null)
             where TLog : class
         {

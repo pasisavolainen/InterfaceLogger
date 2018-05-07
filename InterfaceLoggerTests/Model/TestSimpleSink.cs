@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using InterfaceLogger.Interfaces;
+using InterfaceLogger.Logging;
 
 namespace InterfaceLoggerTests.Model
 {
@@ -7,7 +8,7 @@ namespace InterfaceLoggerTests.Model
     {
         public List<string> Messages { get; } = new List<string>();
 
-        public void Write(string msg, Level level)
+        public void Write(string msg, LogLevel level)
             => Messages.Add(msg);
 
         internal bool HasMessage(string msg)

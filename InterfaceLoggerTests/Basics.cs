@@ -1,5 +1,5 @@
 ﻿using InterfaceLogger;
-using InterfaceLogger.Interfaces;
+using InterfaceLogger.Logging;
 using InterfaceLoggerTests.Model;
 using Xunit;
 
@@ -82,7 +82,7 @@ namespace InterfaceLoggerTests
         {
             var sink = new TestComplexSink();
             var expectedMessage = "priority test message";
-            var expectedLevel = Level.Fatal;
+            var expectedLevel = LogLevel.Fatal;
             var messageSource = new TestSimpleMessageSource()
                 .MessageText(nameof(IBasicsLog.ParametrizedMessage), expectedMessage, expectedLevel);
 

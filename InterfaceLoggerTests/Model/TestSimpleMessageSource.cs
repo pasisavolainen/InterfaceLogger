@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using InterfaceLogger.Interfaces;
+using InterfaceLogger.Logging;
 
 namespace InterfaceLoggerTests.Model
 {
@@ -13,7 +14,7 @@ namespace InterfaceLoggerTests.Model
             return val;
         }
 
-        internal TestSimpleMessageSource MessageText(string callName, string realText, Level level = Level.Info)
+        internal TestSimpleMessageSource MessageText(string callName, string realText, LogLevel level = LogLevel.Info)
         {
             var msg = GetOrNew(callName);
             msg.Text = realText;

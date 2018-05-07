@@ -1,5 +1,5 @@
 ﻿using InterfaceLogger;
-using InterfaceLogger.Interfaces;
+using InterfaceLogger.Logging;
 using InterfaceLogger.Sources;
 using InterfaceLoggerTests.Model;
 using InterfaceLoggerTests.Properties;
@@ -31,7 +31,7 @@ namespace InterfaceLoggerTests
             logger.MessageWithPriority();
 
             Assert.Equal(Resources.MessageWithPriority, sink.FirstMessage.Text);
-            Assert.Equal(Level.Fatal, sink.FirstMessage.Level);
+            Assert.Equal(LogLevel.Fatal, sink.FirstMessage.Level);
         }
     }
 }

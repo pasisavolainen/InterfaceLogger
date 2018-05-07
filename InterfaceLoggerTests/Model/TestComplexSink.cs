@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using InterfaceLogger.Interfaces;
+using InterfaceLogger.Logging;
 
 namespace InterfaceLoggerTests.Model
 {
@@ -7,12 +8,12 @@ namespace InterfaceLoggerTests.Model
     {
         protected List<IMessageConfiguration> _messages = new List<IMessageConfiguration>();
 
-        public void Write(string msg, Level level)
+        public void Write(string msg, LogLevel level)
         {
             _messages.Add(new TestSimpleMessageConfiguration { Text = msg, Level = level });
         }
 
         internal IMessageConfiguration FirstMessage
-            =>_messages[0];        
+            =>_messages[0];
     }
 }

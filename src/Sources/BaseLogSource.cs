@@ -1,10 +1,10 @@
-﻿using InterfaceLogger.Interfaces;
+﻿using InterfaceLogger.Logging;
 
 namespace InterfaceLogger.Sources
 {
     public abstract class BaseLogSource
     {
-        public static Level ResolveLevel(string fmt)
+        public static LogLevel ResolveLevel(string fmt)
         {
             fmt = fmt?.ToLowerInvariant();
             switch (fmt)
@@ -12,19 +12,19 @@ namespace InterfaceLogger.Sources
                 case "t":
                 case "trace":
                 case "v":
-                case "verbose": return Level.Verbose;
+                case "verbose": return LogLevel.Trace;
                 case "d":
-                case "debug": return Level.Debug;
+                case "debug": return LogLevel.Debug;
                 case "i":
-                case "info": return Level.Info;
+                case "info": return LogLevel.Info;
                 case "w":
                 case "warn":
-                case "warning": return Level.Warn;
+                case "warning": return LogLevel.Warn;
                 case "e":
-                case "error": return Level.Error;
+                case "error": return LogLevel.Error;
                 case "f":
-                case "fatal": return Level.Fatal;
-                default: return Level.Info;
+                case "fatal": return LogLevel.Fatal;
+                default: return LogLevel.Info;
             }
         }
     }

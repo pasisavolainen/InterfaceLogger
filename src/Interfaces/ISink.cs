@@ -1,7 +1,9 @@
-﻿namespace InterfaceLogger.Interfaces
+﻿using InterfaceLogger.Logging;
+
+namespace InterfaceLogger.Interfaces
 {
     public interface ISink
     {
-        void Write(string msg, Level level);
+        void Write(string msg, LogLevel level);
     }
 }

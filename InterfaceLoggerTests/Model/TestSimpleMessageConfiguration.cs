@@ -1,4 +1,5 @@
 ﻿using InterfaceLogger.Interfaces;
+using InterfaceLogger.Logging;
 
 namespace InterfaceLoggerTests.Model
 {
@@ -6,6 +7,6 @@ namespace InterfaceLoggerTests.Model
     {
         public string Text { get; set; }
 
-        public Level Level { get; set; }
+        public LogLevel Level { get; set; }
     }
 }

@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using InterfaceLogger.Interfaces;
+﻿using InterfaceLogger.Interfaces;
+using InterfaceLogger.Logging;
 
 namespace InterfaceLogger.Model
 {
@@ -7,9 +7,11 @@ namespace InterfaceLogger.Model
     {
         private static ISink _instance;
         public static ISink Instance => _instance ?? (_instance = new DefaultMessageSink());
-        public void Write(string msg, Level level)
+        public void Write(string msg, LogLevel level)
         {
-            Debug.WriteLine(msg, level.ToString());
+            var logger = LogProvider.For<ISink>();
+
+            logger.Log(level, () => msg, null);
         }
     }
 }
