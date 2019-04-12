@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Resources;
@@ -12,6 +13,7 @@ namespace InterfaceLogger
 {
     public class LoggerManager
     {
+        protected static Dictionary<Type, ISink> _sinks = new Dictionary<Type, ISink>();
         /// <summary>
         /// Get implementation for logger interface you specify.
         /// </summary>
@@ -24,7 +26,7 @@ namespace InterfaceLogger
         {
             var x = A.Fake<TLog>();
             A.CallTo(x)
-                .Invokes(call => DoLogging(call, sink ?? GetSink(),
+                .Invokes(call => DoLogging(call, sink ?? GetSink<TLog>(null),
                                             messageSource ?? GetMessageSource<TLog>()));
 
             return x;
@@ -34,14 +36,28 @@ namespace InterfaceLogger
             where TLog : class
             => Get<TLog>(null, new ResXLogSource(resourceManager));
 
+
+        internal static ISink GetSink<TLog>(TLog _ = null)
+        {
+            if (!_sinks.TryGetValue(typeof(TLog), out ISink sink))
+            {
+                _sinks[typeof(TLog)] = sink = DefaultMessageSink.Instance;
+            }
+            return sink;
+        }
+        internal static void SetSink<TLog>(ISink sink)
+        {
+            if (_sinks.TryGetValue(typeof(TLog), out ISink oldSink)
+                && oldSink != DefaultMessageSink.Instance && oldSink != sink)
+            {
+                Trace.Write($"Competing sink attempted for {typeof(TLog)}, {sink} when {oldSink} already used.");
+            }
+            _sinks[typeof(TLog)] = sink;
+        }
+
         private static IMessageSource GetMessageSource<TLog>() where TLog : class
         {
             return DefaultMessageSource.Instance;
-        }
-
-        private static ISink GetSink()
-        {
-            return DefaultMessageSink.Instance;
         }
 
         private static void DoLogging(IFakeObjectCall call, ISink sink, IMessageSource messageSource)

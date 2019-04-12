@@ -7,5 +7,6 @@ namespace Demo
     internal interface IDemoLogger
     {
         void Test();
+        void TestNotInResource();
     }
 }
