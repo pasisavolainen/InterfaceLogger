@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using InterfaceLogger.Interfaces;
 using InterfaceLogger.Logging;
 
@@ -35,7 +33,7 @@ namespace InterfaceLogger
         public ISaneLogger Write(LogLevel level, string msg, Exception e, params object[] formatParams)
         {
             if (_sink == null)
-                _sink = LoggerManager.GetSink<T>(Semantic);
+                _sink = LoggerManager.GetLoggerSink(typeof(T));
             _sink.Write(level, msg, e, formatParams);
             return this;
         }
@@ -43,13 +41,14 @@ namespace InterfaceLogger
         public ISaneLogger Error(string msg, params object[] formatParams)
             => Write(LogLevel.Error, msg, null, formatParams);
 
-
         public ISaneLogger Debug(string msg, params object[] formatParams)
             => Write(LogLevel.Debug, msg, null, formatParams);
     }
 
     public class LogFactory
     {
+        public LogFactory() { }
+
         public static TLog BuildLogger<TLog>(ISink sink = null, IMessageSource source = null)
             where TLog: class
             => LoggerManager.Get<TLog>(sink, source);
@@ -57,6 +56,12 @@ namespace InterfaceLogger
         public ISemanticLogger<TLog> BuildShim<TLog>(ISink sink, IMessageSource source)
             where TLog : class
             => new LogShim<TLog>(BuildLogger<TLog>(sink, source));
+    }
 
+    public class LoggerProvider<TLog> where TLog: class
+    {
+        public TLog For<TContext>(TContext ctx)
+            where TContext: class
+            => LoggerManager.Get<TLog>(loggercontext:ctx);
     }
 }

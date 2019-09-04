@@ -9,7 +9,7 @@ namespace Demo
         static void Main(string[] args)
         {
             SpinUpSerilog();
-            var logger = LoggerManager.Get<Program, IDemoLogger>(DemoLogResource.ResourceManager);
+            var logger = LoggerManager.Get<Program, IDemoLogger>(DemoLogResource.ResourceManager, null);
 
             logger.Test();
         }

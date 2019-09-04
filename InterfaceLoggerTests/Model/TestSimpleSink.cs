@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using InterfaceLogger.Interfaces;
 using InterfaceLogger.Logging;
 
@@ -8,15 +10,13 @@ namespace InterfaceLoggerTests.Model
     {
         public List<string> Messages { get; } = new List<string>();
 
-        public void Write(string msg, LogLevel level)
+        public void Write(LogLevel level, string msg, Exception e, params object[] formatParams)
             => Messages.Add(msg);
 
         internal bool HasMessage(string msg)
             => Messages.Contains(msg);
 
         internal string FirstMessage()
-        {
-            return Messages[0];
-        }
+            => Messages.FirstOrDefault();
     }
 }

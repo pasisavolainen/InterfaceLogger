@@ -1,4 +1,4 @@
-# InterfaceLogger
+﻿# InterfaceLogger
 Logger that is defined by interface.
 
 ## Just... Why
@@ -17,19 +17,40 @@ log and there is no way that any other messages would appear there through loggi
 
 Create an interface that has the messages you want to write as methods:
 ```C#
-// /!\ interface must be `public` or you must have 
+// ⚠ interface must be `public` or you must have 
 //     [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] on that assembly.
 public interface ICustomerLog {
     void ReceiptReceived(DateTime dt);
     void PaymentCancelled(DateTime dt, string reason);
 }
 
-...
+// in Dependency Injection configure logger creation
+void AddLoggers(IServiceCollection srvCollection)
+{
+	// this is contextless logger, it will not know which class consumed it
+	srvCollection.AddScoped<ICustomerLog>(sp => InterfaceLogger.LogFactory.BuildLogger<ICustomerLog>())
+}
+
+
 
 // Create the logger from the interface
 // LogContext is the context of the logger, typically like log4net's LogManager.GetLogger(typeof(LogContext))
 // ICustomerLog is the interface you defined
 // LogResource is a resx file you have
+
+class PaymentService {
+	private ICustomerLog Log { get; }
+	public PaymentService(ICustomerLog log)
+	{
+		Log = log;
+	}
+	public void ReceiptHandler(DateTime dt)
+	{
+		...
+		Log.ReceiptReceived(dt);
+	}
+}
+
 var logger = InterfaceLogger.LoggerManager.Get<LogContext, ICustomerLog>(LogResource.ResourceManager);
 
 // Use logger:
@@ -61,16 +82,17 @@ Standard C# string interpolation is used, ie. first parameter is `{0}` and the s
 
 # le plan, ie. want
 
-- reader for message sources (json)
-- validator for message sources (interface matches message source)
-  - also test drive the message source (especially positional string interpolation parameters)
-- generator for message sources (resx, json, .txt)
+- [ ] reader for message sources (json)
+- [ ] validator for message sources (interface matches message source)
+  - [ ] also test drive the message source (especially positional string interpolation parameters)
+- [ ] generator for message sources (resx, json, .txt)
 - [X] https://github.com/damianh/LibLog
-  - [ ] unmake it suck:
+  - [ ] unmake our use of it suck:
     - [ ] use correct context (hardcoded to `ISink`)
     - [ ] nested contexts
-- injectables when a logging call is issued (FooMessage-inject: "Foo.Injection.Handler,BarAssembly" )
-- named log parameters (FooMessage: "This is {test:1} message {for:0} participants")
+- [ ] injectables when a logging call is issued (FooMessage-inject: "Foo.Injection.Handler,BarAssembly" )
+- [ ] named log parameters (FooMessage: "This is {test:1} message {for:0} participants")
   - [x] parameter name info is available through the proxy/fake library
-- filter for parameters (FooMessage-filter: "{ $: 'exclude', 'user': 'i', 'domain': { 'name': 'i'}}")
+- [ ] filter for parameters (FooMessage-filter: "{ $: 'exclude', 'user': 'i', 'domain': { 'name': 'i'}}")
   (ie. )
+- [ ] infer context from first `ILog.Foobar()` call (configurable on factory)
