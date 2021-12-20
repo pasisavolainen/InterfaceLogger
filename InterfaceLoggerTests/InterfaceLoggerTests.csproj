@@ -27,16 +27,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\src\InterfaceLogger.csproj" />
-	<ProjectReference Include="..\InterfaceLogger.AOT\InterfaceLogger.AOT.csproj" />
+    <ProjectReference Include="..\InterfaceLogger.AOT\InterfaceLogger.AOT.csproj" />
   </ItemGroup>
 
+
   <ItemGroup>
-    <Compile Update="Data\EmptyDemoLoggerFactory.cs">
+    <Content Include="Data\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
-    <Compile Update="Data\EmptyDemoLoggerFactory.Generated.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
+    </Content>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

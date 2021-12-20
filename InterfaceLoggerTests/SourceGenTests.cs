@@ -13,12 +13,22 @@ namespace InterfaceLoggerTests
     public class SourceGenTests
     {
         [Fact]
-        public async Task hello()
+        public async Task EmptyDemoLogger()
         {
-            var code      = TestFile("EmptyDemoLoggerFactory.cs");
-            var generated = TestFile("EmptyDemoLoggerFactory.Generated.cs");
+            await GenerateSingleFileTest("EmptyDemoLoggerFactory").RunAsync();
+        }
 
-            await new VerifyCS.Test
+        [Fact]
+        public async Task SingleDemoLogger()
+        {
+            await GenerateSingleFileTest("SingleDemoLoggerFactory").RunAsync();
+        }
+
+        private static VerifyCS.Test GenerateSingleFileTest(string fileName)
+        {
+            var code = TestFile($"{fileName}.cs");
+            var generated = TestFile($"{fileName}.Generated.cs");
+            return new VerifyCS.Test
             {
                 TestState =
                 {
@@ -26,11 +36,11 @@ namespace InterfaceLoggerTests
                     AdditionalReferences = { typeof(ILoggerFactory).Assembly },
                     GeneratedSources =
                     {
-                        (typeof(LoggerGenerator), "hello.Generated.cs", 
+                        (typeof(LoggerGenerator), "hello.Generated.cs",
                             SourceText.From(generated, Encoding.UTF8, SourceHashAlgorithm.Sha1))
                     },
                 },
-            }.RunAsync();
+            };
         }
 
         private static string TestFile(string fileName)
