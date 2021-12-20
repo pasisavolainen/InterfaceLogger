@@ -41,7 +41,7 @@ namespace GenDemo {
             public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
             {
                 if (syntaxNode is ClassDeclarationSyntax cds
-                    && cds.Identifier.ValueText == "DemoLoggerFactory")
+                    && cds.Identifier.ValueText == "EmptyDemoLoggerFactory")
                 {
                     ClassToAugment = cds;
                 }
