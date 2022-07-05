@@ -1,11 +1,9 @@
-﻿using System.IO;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using InterfaceLogger.AOT;
 using InterfaceLogger.Interfaces;
+using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Text;
-using Xunit;
 using VerifyCS = CSharpSourceGeneratorVerifier<InterfaceLogger.AOT.LoggerGenerator>;
 
 namespace InterfaceLoggerTests
@@ -33,6 +31,8 @@ namespace InterfaceLoggerTests
                 TestState =
                 {
                     Sources = {code},
+                    // defaults to netcore3.1 which is not installed..
+                    ReferenceAssemblies = ReferenceAssemblies.NetStandard.NetStandard20,
                     AdditionalReferences = { typeof(ILoggerFactory).Assembly },
                     GeneratedSources =
                     {
@@ -45,7 +45,8 @@ namespace InterfaceLoggerTests
 
         private static string TestFile(string fileName)
         {
-            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+                        ?? Environment.CurrentDirectory;
             var fullpath = Path.Combine(path, "Data", fileName);
             return File.ReadAllText(fullpath);
         }

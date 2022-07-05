@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
@@ -10,13 +10,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FakeItEasy" Version="5.1.0" />
-    <PackageReference Include="FakeItEasy.Analyzer.CSharp" Version="5.1.0" />
-    <PackageReference Include="LibLog" Version="5.0.6">
+    <PackageReference Include="FakeItEasy" Version="7.3.1" />
+    <PackageReference Include="FakeItEasy.Analyzer.CSharp" Version="6.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="LibLog" Version="5.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InterfaceLogger.AOT\InterfaceLogger.AOT.csproj"
+					  OutputItemType="Analyzer"
+					  ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>

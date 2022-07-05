@@ -7,25 +7,16 @@ namespace InterfaceLogger.Sources
         public static LogLevel ResolveLevel(string fmt)
         {
             fmt = fmt?.ToLowerInvariant();
-            switch (fmt)
+            return fmt switch
             {
-                case "t":
-                case "trace":
-                case "v":
-                case "verbose": return LogLevel.Trace;
-                case "d":
-                case "debug": return LogLevel.Debug;
-                case "i":
-                case "info": return LogLevel.Info;
-                case "w":
-                case "warn":
-                case "warning": return LogLevel.Warn;
-                case "e":
-                case "error": return LogLevel.Error;
-                case "f":
-                case "fatal": return LogLevel.Fatal;
-                default: return LogLevel.Info;
-            }
+                "t" or "trace" or "v" or "verbose" => LogLevel.Trace,
+                "d" or "debug" => LogLevel.Debug,
+                "i" or "info" => LogLevel.Info,
+                "w" or "warn" or "warning" => LogLevel.Warn,
+                "e" or "error" => LogLevel.Error,
+                "f" or "fatal" => LogLevel.Fatal,
+                _ => LogLevel.Info,
+            };
         }
     }
 }

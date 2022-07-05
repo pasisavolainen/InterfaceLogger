@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -20,30 +21,43 @@ namespace InterfaceLogger.AOT
 
         public void Execute(GeneratorExecutionContext context)
         {
-            LoggerClassReceiver sr = (LoggerClassReceiver)context.SyntaxReceiver;
-            var uc = sr.ClassToAugment;
-            if (uc == null)
+            if (context.SyntaxContextReceiver is not LoggerClassReceiver sr)
                 return;
 
-            var st = SourceText.From(@"
-namespace GenDemo {
-    public partial class hello {
-    }
-}
-",
-                Encoding.UTF8);
+            var uc = sr.ClassesToAugment;
+            if (uc?.Count == 0)
+                return;
+
+            var loggerFactoryInterface = context.Compilation.GetTypeByMetadataName("InterfaceLogger.Interfaces.ILoggerFactory");
+
+            string nmName = uc.First().ContainingNamespace.ToDisplayString();
+            StringBuilder sb = new($@"
+namespace {nmName}
+{{
+");
+
+            foreach(var receivedClass in sr.ClassesToAugment)
+            {
+                sb.Append($"    public partial class {receivedClass.Name} {{ }}");
+            }
+            sb.AppendLine("\n}\n");
+
+            var st = SourceText.From(sb.ToString(), Encoding.UTF8);
             context.AddSource("hello.Generated", st);
         }
 
-        class LoggerClassReceiver : ISyntaxReceiver
+        class LoggerClassReceiver : ISyntaxContextReceiver
         {
-            public ClassDeclarationSyntax ClassToAugment { get; private set; }
-            public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
+            public List<INamedTypeSymbol> ClassesToAugment { get; } = new ();
+            public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
             {
-                if (syntaxNode is ClassDeclarationSyntax cds
-                    && cds.Identifier.ValueText == "EmptyDemoLoggerFactory")
+                if (context.Node is ClassDeclarationSyntax cds
+                    // && cds.Identifier.ValueText == "EmptyDemoLoggerFactory"
+                    && cds.BaseList != null)
                 {
-                    ClassToAugment = cds;
+                    var clSymbol = context.SemanticModel.GetDeclaredSymbol(cds) as INamedTypeSymbol;
+                    if (clSymbol.AllInterfaces.Any(ii => ii.ToDisplayString() == "InterfaceLogger.Interfaces.ILoggerFactory"))
+                        ClassesToAugment.Add( clSymbol);
                 }
             }
         }
