@@ -1,46 +1,37 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Diagnostics;
+using System.Reflection;
 using InterfaceLogger.AOT;
-using InterfaceLogger.Interfaces;
-using Microsoft.CodeAnalysis.Testing;
-using Microsoft.CodeAnalysis.Text;
-using VerifyCS = CSharpSourceGeneratorVerifier<InterfaceLogger.AOT.LoggerGenerator>;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace InterfaceLoggerTests
 {
     public class SourceGenTests
     {
         [Fact]
-        public async Task EmptyDemoLogger()
+        public void Test1()
         {
-            await GenerateSingleFileTest("EmptyDemoLoggerFactory").RunAsync();
+            var source = @"namespace foo { class c { void m() {} } }";
+
+            var output = GetGeneratedOutput(source);
+
+            Assert.NotNull(output);
+            Assert.Equal("// global::foo.c", output.Trim());
         }
 
         [Fact]
-        public async Task SingleDemoLogger()
+        public void SingleDemo()
         {
-            await GenerateSingleFileTest("SingleDemoLoggerFactory").RunAsync();
-        }
+            var source = TestFile("SingleDemoLoggerFactory.cs");
 
-        private static VerifyCS.Test GenerateSingleFileTest(string fileName)
-        {
-            var code = TestFile($"{fileName}.cs");
-            var generated = TestFile($"{fileName}.Generated.cs");
-            return new VerifyCS.Test
-            {
-                TestState =
-                {
-                    Sources = {code},
-                    // defaults to netcore3.1 which is not installed..
-                    ReferenceAssemblies = ReferenceAssemblies.NetStandard.NetStandard20,
-                    AdditionalReferences = { typeof(ILoggerFactory).Assembly },
-                    GeneratedSources =
-                    {
-                        (typeof(LoggerGenerator), "hello.Generated.cs",
-                            SourceText.From(generated, Encoding.UTF8, SourceHashAlgorithm.Sha1))
-                    },
-                },
-            };
+            // act
+            var output = GetGeneratedOutput(source);
+
+            // assert
+            Assert.NotNull(output);
+            var expected = TestFile("SingleDemoLoggerFactory.Generated.cs");
+
+            Assert.Equal(expected, output);
         }
 
         private static string TestFile(string fileName)
@@ -49,6 +40,39 @@ namespace InterfaceLoggerTests
                         ?? Environment.CurrentDirectory;
             var fullpath = Path.Combine(path, "Data", fileName);
             return File.ReadAllText(fullpath);
+        }
+
+        private string GetGeneratedOutput(string source)
+        {
+            var syntaxTree = CSharpSyntaxTree.ParseText(source);
+
+            var references = new List<MetadataReference>();
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                if (!assembly.IsDynamic && !string.IsNullOrWhiteSpace(assembly.Location))
+                {
+                    references.Add(MetadataReference.CreateFromFile(assembly.Location));
+                }
+            }
+
+            var compilation = CSharpCompilation.Create("foo", new SyntaxTree[] { syntaxTree }, references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+            // TODO: Uncomment this line if you want to fail tests when the injected program isn't valid _before_ running generators
+            // var compileDiagnostics = compilation.GetDiagnostics();
+            // Assert.False(compileDiagnostics.Any(d => d.Severity == DiagnosticSeverity.Error), "Failed: " + compileDiagnostics.FirstOrDefault()?.GetMessage());
+
+            IIncrementalGenerator generator = new LoggerGenerator();
+
+            var driver = CSharpGeneratorDriver.Create(generator);
+            driver.RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out var generateDiagnostics);
+            Assert.False(generateDiagnostics.Any(d => d.Severity == DiagnosticSeverity.Error), "Failed: " + generateDiagnostics.FirstOrDefault()?.GetMessage());
+
+            string output = outputCompilation.SyntaxTrees.Last().ToString();
+
+            Debug.WriteLine(output);
+
+            return output;
         }
     }
 }

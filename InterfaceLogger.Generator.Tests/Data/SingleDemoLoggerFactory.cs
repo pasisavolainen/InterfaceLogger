@@ -6,11 +6,11 @@ namespace InterfaceLoggerTests.Data
     public interface IExampleLogger
     {
         void Example();
-        void Example(string message);
-        void Example(DateTime dt);
+        //void Example(string message);
+        //void Example(DateTime dt);
     }
     public partial class SingleDemoLoggerFactory : ILoggerFactory
     {
-        public IExampleLogger ExampleLogger { get; set; }
+        public partial IExampleLogger GetExampleLogger();
     }
 }
