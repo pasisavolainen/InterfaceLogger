@@ -34,6 +34,21 @@ namespace InterfaceLoggerTests
             Assert.Equal(expected, output);
         }
 
+        [Fact]
+        public void DemoBroken()
+        {
+            var source = TestFile("DemoBroken.cs");
+
+            // act
+            var output = GetGeneratedOutput(source);
+
+            // assert
+            Assert.NotNull(output);
+
+            var expected = TestFile("DemoBroken.Generated.cs");
+            Assert.Equal(expected, output);
+        }
+
         private static string TestFile(string fileName)
         {
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)

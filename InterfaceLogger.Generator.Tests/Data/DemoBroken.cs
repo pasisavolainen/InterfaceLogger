@@ -12,7 +12,7 @@ namespace Demo
     }
     public partial class MyLogger { }
 
-    public  partial class DemoLoggirFactory : ILoggerFactory
+    public partial class DemoLoggirFactory : ILoggerFactory
     {
         public partial IDemoLogger DemoLogger();
     }
