@@ -9,6 +9,8 @@ namespace Demo
     {
         void Test();
         void TestNotInResource();
+        void TestWithParameters(string paramname);
+        IDemoLogger TestWithDemoReturn();
     }
     public partial class MyLogger { }
 

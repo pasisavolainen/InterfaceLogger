@@ -6,7 +6,7 @@ namespace InterfaceLoggerTests.Data
         public partial IParametersLogger GetExampleLogger()
             => new Generated_IParametersLogger();
 
-        public class Generated_IParametersLogger : InterfaceLogger.AotLogger, IParametersLogger
+        public class Generated_IParametersLogger : InterfaceLogger.AotLogger<IParametersLogger>, IParametersLogger
         {
             public void Example(string message, DateTime? dt)
                 => base.Log("Example", message, dt);

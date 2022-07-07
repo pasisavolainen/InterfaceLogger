@@ -6,7 +6,7 @@ namespace Demo
         public partial IDemoLogger DemoLogger()
             => new Generated_IDemoLogger();
 
-        internal class Generated_IDemoLogger : InterfaceLogger.AotLogger, IDemoLogger
+        internal class Generated_IDemoLogger : InterfaceLogger.AotLogger<IDemoLogger>, IDemoLogger
         {
             public void Test()
                 => base.Log("Test");

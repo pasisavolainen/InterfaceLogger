@@ -89,7 +89,7 @@ namespace {symbol.ContainingNamespace}
 $@"        {visibility} partial {logifacename} {methodname}()
             => new {logclassname}();
 
-        {logifacevis} class {logclassname} : InterfaceLogger.AotLogger, {logifacename}
+        {logifacevis} class {logclassname} : InterfaceLogger.AotLogger<{logifacename}>, {logifacename}
         {{";
             sb.AppendLine(s);
 
@@ -99,7 +99,7 @@ $@"        {visibility} partial {logifacename} {methodname}()
                 var paramdef = ifmethod.Parameters.Select(p => $"{p.OriginalDefinition} {p.Name}").JoinString(", ");
                 var paramlst = new[] { ifmname.Quoted() }.Concat(ifmethod.Parameters.Select(p => p.Name)).JoinString(", ");
                 s =
-$@"            public void {ifmname}({paramdef})
+$@"            public {ifmethod.ReturnType.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)} {ifmname}({paramdef})
                 => base.Log({paramlst});";
                 sb.AppendLine(s);
             }

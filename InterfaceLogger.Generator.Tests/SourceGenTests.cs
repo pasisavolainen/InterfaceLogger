@@ -19,6 +19,7 @@
             InlineData("DemoBroken.cs"),
             InlineData("EmptyDemoLoggerFactory.cs"),
             InlineData("Parameters.cs"),
+            InlineData("Return.cs"),
         ]
         public Task Compilations(string fileName)
         {

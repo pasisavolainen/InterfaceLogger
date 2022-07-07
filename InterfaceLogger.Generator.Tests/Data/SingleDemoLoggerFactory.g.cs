@@ -6,7 +6,7 @@ namespace InterfaceLoggerTests.Data
         public partial IExampleLogger GetExampleLogger()
             => new Generated_IExampleLogger();
 
-        public class Generated_IExampleLogger : InterfaceLogger.AotLogger, IExampleLogger
+        public class Generated_IExampleLogger : InterfaceLogger.AotLogger<IExampleLogger>, IExampleLogger
         {
             public void Example()
                 => base.Log("Example");
