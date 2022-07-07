@@ -3,7 +3,7 @@ namespace Demo
 {
     internal partial class DemoLoggirFactory
     {
-        internal partial IDemoLogger DemoLogger()
+        public partial IDemoLogger DemoLogger()
             => new Generated_IDemoLogger();
 
         internal class Generated_IDemoLogger : InterfaceLogger.AotLogger, IDemoLogger

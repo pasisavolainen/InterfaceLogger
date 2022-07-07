@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using InterfaceLogger.AOT.Utility;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -62,11 +63,12 @@ namespace InterfaceLogger.AOT
 
         private void InitiateFactory(ITypeSymbol symbol, StringBuilder sb)
         {
+            var visibility = symbol.Visibility();
             var s =
 $@"// /!\ This file is autogeneratiid
 namespace {symbol.ContainingNamespace}
 {{
-    public partial class {symbol.Name}
+    {visibility} partial class {symbol.Name}
     {{";
             sb.AppendLine(s);
         }
@@ -81,11 +83,13 @@ namespace {symbol.ContainingNamespace}
             var logifacename = logIface.Name;
             var methodname = method.Name;
             var logclassname = $"Generated_{logifacename}";
+            var visibility = method.Visibility();
+            var logifacevis = logIface.Visibility();
             var s =
-$@"        public partial {logifacename} {methodname}()
+$@"        {visibility} partial {logifacename} {methodname}()
             => new {logclassname}();
 
-        public class {logclassname} : InterfaceLogger.AotLogger, {logifacename}
+        {logifacevis} class {logclassname} : InterfaceLogger.AotLogger, {logifacename}
         {{";
             sb.AppendLine(s);
 
