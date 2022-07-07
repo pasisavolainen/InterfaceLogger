@@ -96,9 +96,11 @@ $@"        {visibility} partial {logifacename} {methodname}()
             foreach(var ifmethod in logIface.GetMembers().Where(m => m is IMethodSymbol).Cast<IMethodSymbol>())
             {
                 var ifmname = ifmethod.Name;
+                var paramdef = ifmethod.Parameters.Select(p => $"{p.OriginalDefinition} {p.Name}").JoinString(", ");
+                var paramlst = new[] { ifmname.Quoted() }.Concat(ifmethod.Parameters.Select(p => p.Name)).JoinString(", ");
                 s =
-$@"            public void {ifmname}()
-                => base.Log(""{ifmname}"");";
+$@"            public void {ifmname}({paramdef})
+                => base.Log({paramlst});";
                 sb.AppendLine(s);
             }
             s = "        }";

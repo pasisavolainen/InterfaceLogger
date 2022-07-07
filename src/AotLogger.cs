@@ -4,7 +4,7 @@ namespace InterfaceLogger
 {
     public class AotLogger
     {
-        public void Log(string v)
+        public void Log(string msg, params object[] values)
             => throw new NotImplementedException();
     }
 }
