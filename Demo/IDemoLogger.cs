@@ -1,7 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using InterfaceLogger.Interfaces;
-
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+﻿using InterfaceLogger.Interfaces;
 
 namespace Demo
 {
@@ -12,7 +9,6 @@ namespace Demo
         void TestWithParameters(string paramname);
         IDemoLogger TestWithDemoReturn();
     }
-    public partial class MyLogger { }
 
     public  partial class DemoLoggirFactory : ILoggerFactory
     {
