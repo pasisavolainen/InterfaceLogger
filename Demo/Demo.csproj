@@ -9,13 +9,12 @@
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
+
+    <!-- this should be coming from local nuget repo -->
+    <PackageReference Include="InterfaceLogger.AOT" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InterfaceLogger.AOT\InterfaceLogger.AOT.csproj"
-					  OutputItemType="Analyzer"
-					  ReferenceOutputAssembly="false" />
-
     <ProjectReference Include="..\src\InterfaceLogger.csproj" />
   </ItemGroup>
 

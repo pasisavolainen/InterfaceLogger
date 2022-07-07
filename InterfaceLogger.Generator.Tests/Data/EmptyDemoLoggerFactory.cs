@@ -1,4 +1,4 @@
-﻿//using InterfaceLogger.Interfaces;
+﻿using InterfaceLogger.Interfaces;
 
 namespace InterfaceLoggerTests.Data
 {

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6</TargetFramework>
@@ -9,28 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\DemoBroken.cs" />
-    <Compile Remove="Data\EmptyDemoLoggerFactory.cs" />
-    <Compile Remove="Data\EmptyDemoLoggerFactory.Generated.cs" />
-    <Compile Remove="Data\SingleDemoLoggerFactory.cs" />
-    <Compile Remove="Data\SingleDemoLoggerFactory.Generated.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Data\DemoBroken.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Compile Remove="VerifyData\**" />
+    <Content Include="VerifyData\**" >
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\EmptyDemoLoggerFactory.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\EmptyDemoLoggerFactory.Generated.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\SingleDemoLoggerFactory.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\SingleDemoLoggerFactory.Generated.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Data\**" >
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
@@ -45,6 +29,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Verify.Xunit" Version="17.2.1" />
 
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" Version="1.1.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.XUnit" Version="1.1.1" />

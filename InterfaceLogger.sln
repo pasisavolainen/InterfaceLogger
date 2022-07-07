@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceLogger", "src\InterfaceLogger.csproj", "{158C6F32-C122-4040-ADE5-16C17C08D952}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceLoggerTests", "InterfaceLoggerTests\InterfaceLoggerTests.csproj", "{321820C2-A2BA-4183-8711-B0F255A29EB0}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9FCAABAC-8714-4A18-9813-32DCF2C44BA9} = {9FCAABAC-8714-4A18-9813-32DCF2C44BA9}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2D933683-8336-41ED-AE76-8351BF7020E9}"
 	ProjectSection(SolutionItems) = preProject
@@ -19,10 +16,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo", "Demo\Demo.csproj", "{F400DAEB-D8AA-4BF7-A063-05D6CB418220}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9FCAABAC-8714-4A18-9813-32DCF2C44BA9} = {9FCAABAC-8714-4A18-9813-32DCF2C44BA9}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceLogger.AOT", "InterfaceLogger.AOT\InterfaceLogger.AOT.csproj", "{9FCAABAC-8714-4A18-9813-32DCF2C44BA9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{158C6F32-C122-4040-ADE5-16C17C08D952} = {158C6F32-C122-4040-ADE5-16C17C08D952}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterfaceLogger.Generator.Tests", "InterfaceLogger.Generator.Tests\InterfaceLogger.Generator.Tests.csproj", "{F9163017-350E-4635-BFCA-9138ED7C26E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceLogger.Generator.Tests", "InterfaceLogger.Generator.Tests\InterfaceLogger.Generator.Tests.csproj", "{F9163017-350E-4635-BFCA-9138ED7C26E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

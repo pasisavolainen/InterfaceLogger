@@ -1,18 +1,15 @@
-﻿using System.Runtime.CompilerServices;
-using InterfaceLogger.Interfaces;
-
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+﻿using InterfaceLogger.Interfaces;
 
 namespace Demo
 {
-    public interface IDemoLogger
+    internal interface IDemoLogger
     {
         void Test();
         void TestNotInResource();
     }
     public partial class MyLogger { }
 
-    public partial class DemoLoggirFactory : ILoggerFactory
+    internal partial class DemoLoggirFactory : ILoggerFactory
     {
         public partial IDemoLogger DemoLogger();
     }
