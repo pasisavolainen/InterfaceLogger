@@ -16,8 +16,7 @@ namespace InterfaceLogger.Sources
 
         public static IMessageSource FromManager(ResourceManager rm)
         {
-            if (rm == null)
-                throw new Exception("come on mon, don't do dis to me");
+            _ = rm ?? throw new ArgumentNullException(nameof(rm));
             return new ResXLogSource(rm);
         }
 
