@@ -13,6 +13,7 @@
         <Content Include="Data\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+        <Content Remove="Data\*.received.cs" />
     </ItemGroup>
 
     <ItemGroup>

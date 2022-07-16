@@ -23,7 +23,7 @@
         ]
         public Task Compilations(string fileName)
         {
-            var source = FileFromData(fileName + ".s.cs");
+            var source = FileFromData($"{fileName}.cs");
 
             // act
             var output = GetGeneratedOutput(source);
@@ -31,8 +31,8 @@
             // assert
             return Verify(output)
                     .UseDirectory("Data")
-                    .UseParameters(fileName)
-                    .UseExtension("g.cs");
+                    .UseFileName(fileName)
+                    .UseExtension("cs");
         }
     }
 }
