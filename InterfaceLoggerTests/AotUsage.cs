@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InterfaceLogger;
+﻿using InterfaceLogger;
 using InterfaceLogger.Logging;
 using InterfaceLoggerTests.Model;
 using Xunit;
@@ -49,8 +44,8 @@ namespace InterfaceLoggerTests
 
             // ass
             Assert.Equal(msg, sink.FirstMessage.Text);
-            //Assert.Equal()
         }
+
         [Fact]
         public void AotLogMessageFormatted()
         {

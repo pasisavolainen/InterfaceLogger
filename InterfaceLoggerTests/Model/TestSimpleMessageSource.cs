@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using InterfaceLogger.Interfaces;
 using InterfaceLogger.Logging;
 
@@ -7,11 +6,11 @@ namespace InterfaceLoggerTests.Model
 {
     internal class TestSimpleMessageSource : IMessageSource
     {
-        Dictionary<string, TestSimpleMessageConfiguration> Messages { get; } = new Dictionary<string, TestSimpleMessageConfiguration>();
+        Dictionary<string, TestSimpleMessageConfiguration> Messages { get; } = new();
 
         public IMessageConfiguration GetMessageConfiguration(string name)
         {
-            Messages.TryGetValue(name, out TestSimpleMessageConfiguration val);
+            Messages.TryGetValue(name, out var val);
             return val;
         }
 
@@ -25,9 +24,8 @@ namespace InterfaceLoggerTests.Model
 
         private TestSimpleMessageConfiguration GetOrNew(string msg)
         {
-            TestSimpleMessageConfiguration cfg;
-            if (!Messages.TryGetValue(msg, out cfg))
-                Messages[msg] = cfg = new TestSimpleMessageConfiguration();
+            if (!Messages.TryGetValue(msg, out var cfg))
+                Messages[msg] = cfg = new();
             return cfg;
         }
     }

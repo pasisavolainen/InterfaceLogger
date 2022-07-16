@@ -8,7 +8,7 @@ namespace InterfaceLoggerTests.Model
 {
     internal class TestSimpleSink : ISink
     {
-        public List<string> Messages { get; } = new List<string>();
+        public List<string> Messages { get; } = new ();
 
         public void Write(LogLevel level, string msg, Exception e, params object[] formatParams)
             => Messages.Add(msg);

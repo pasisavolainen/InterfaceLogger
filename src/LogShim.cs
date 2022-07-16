@@ -20,20 +20,15 @@ namespace InterfaceLogger
         where T: class
     {
         protected T _semantic;
-        public T Semantic => _semantic
-                        ?? (_semantic = LoggerManager.Get<T>());
-        public LogShim()
-        { }
+        public T Semantic => _semantic ??= LoggerManager.Get<T>();
+        public LogShim() { }
         public LogShim(T semantic)
-        {
-            _semantic = semantic;
-        }
+            => _semantic = semantic;
 
         protected ISink _sink;
         public ISaneLogger Write(LogLevel level, string msg, Exception e, params object[] formatParams)
         {
-            if (_sink == null)
-                _sink = LoggerManager.GetLoggerSink(typeof(T));
+            _sink ??= LoggerManager.GetLoggerSink(typeof(T));
             _sink.Write(level, msg, e, formatParams);
             return this;
         }

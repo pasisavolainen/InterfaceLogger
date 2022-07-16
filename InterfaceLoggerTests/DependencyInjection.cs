@@ -34,10 +34,9 @@ namespace InterfaceLoggerTests
 
             // act
             var srvProvider = srvCollection.BuildServiceProvider();
-
-            // assert
             var injected = srvProvider.GetRequiredService<InjectedShim>();
 
+            // assert
             Assert.NotNull(injected.Log);
             Assert.NotNull(injected.Log.Semantic);
             injected.Log.Semantic.Message();
