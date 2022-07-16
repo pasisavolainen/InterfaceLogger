@@ -100,7 +100,7 @@ $@"        {visibility} partial {logifacename} {methodname}()
                 var paramlst = new[] { ifmname.Quoted() }.Concat(ifmethod.Parameters.Select(p => p.Name)).JoinString(", ");
                 s =
 $@"            public {ifmethod.ReturnType.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)} {ifmname}({paramdef})
-                => base.Log({paramlst});";
+                => base.Log(this, {paramlst});";
                 sb.AppendLine(s);
             }
             s = "        }";

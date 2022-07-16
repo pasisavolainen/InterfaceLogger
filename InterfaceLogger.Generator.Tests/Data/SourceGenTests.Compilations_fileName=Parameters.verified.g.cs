@@ -9,7 +9,7 @@ namespace InterfaceLoggerTests.Data
         public class Generated_IParametersLogger : InterfaceLogger.AotLogger<IParametersLogger>, IParametersLogger
         {
             public void Example(string message, DateTime? dt)
-                => base.Log("Example", message, dt);
+                => base.Log(this, "Example", message, dt);
         }
     }
 }

@@ -4,7 +4,7 @@ namespace InterfaceLogger
 {
     public abstract class AotLogger<TLogger>
     {
-        public TLogger Log(string msg, params object[] values)
-            => throw new NotImplementedException();
+        public TLogger Log(TLogger logger, string msg, params object[] values)
+            => LoggerManager.Instance.Log(logger, msg, values);
     }
 }

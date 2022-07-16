@@ -15,23 +15,23 @@
         }
 
         [Theory,
-            InlineData("SingleDemoLoggerFactory.cs"),
-            InlineData("DemoBroken.cs"),
-            InlineData("EmptyDemoLoggerFactory.cs"),
-            InlineData("Parameters.cs"),
-            InlineData("Return.cs"),
+            InlineData("SingleDemoLoggerFactory"),
+            InlineData("DemoBroken"),
+            InlineData("EmptyDemoLoggerFactory"),
+            InlineData("Parameters"),
+            InlineData("Return"),
         ]
         public Task Compilations(string fileName)
         {
-            var source = FileFromData(fileName);
+            var source = FileFromData(fileName + ".s.cs");
 
             // act
             var output = GetGeneratedOutput(source);
 
             // assert
             return Verify(output)
+                    .UseDirectory("Data")
                     .UseParameters(fileName)
-                    .UseDirectory("VerifyData")
                     .UseExtension("g.cs");
         }
     }

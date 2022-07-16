@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>10</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="../InterfaceLogger.Generator.Tests/Data/*.s.cs" />
+        <Compile Include="../InterfaceLogger.Generator.Tests/Data/*.verified.g.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- VerifyTests.Verify produces "emptyString" for empty file comparisons and that doesn't compile -->
+        <Compile Remove="..\InterfaceLogger.Generator.Tests\Data\SourceGenTests.Compilations_fileName=EmptyDemoLoggerFactory.verified.g.cs" />
+        <None Include="..\InterfaceLogger.Generator.Tests\Data\SourceGenTests.Compilations_fileName=EmptyDemoLoggerFactory.verified.g.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\src\InterfaceLogger.csproj" />
+    </ItemGroup>
+
+</Project>

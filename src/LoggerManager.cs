@@ -13,8 +13,15 @@ namespace InterfaceLogger
 {
     public class LoggerManager
     {
-        protected static Dictionary<Type, ISink> LoggerSinks = new Dictionary<Type, ISink>();
-        protected static Dictionary<Type, ISink> ContextSinks = new Dictionary<Type, ISink>();
+        private static LoggerManager g_instance;
+        public static LoggerManager Instance {
+            get => g_instance ??= Instantiate(DefaultMessageSink.Instance, DefaultMessageSource.Instance);
+        }
+        protected Dictionary<Type, ISink> LoggerSinks = new();
+        protected Dictionary<Type, ISink> ContextSinks = new();
+
+        public ISink GlobalSink { get; private set; }
+        public IMessageSource GlobalSource { get; private set; }
 
         private class LoggerContext
         {
@@ -54,45 +61,43 @@ namespace InterfaceLogger
 
         internal static ISink GetLoggerSink(Type typeOfLogger)
         {
-            if (!LoggerSinks.TryGetValue(typeOfLogger, out ISink sink))
+            if (!Instance.LoggerSinks.TryGetValue(typeOfLogger, out ISink sink))
             {
-                LoggerSinks[typeOfLogger] = sink = DefaultMessageSink.Instance;
+                Instance.LoggerSinks[typeOfLogger] = sink = DefaultMessageSink.Instance;
             }
             return sink;
         }
         internal static ISink GetContextSink(Type typeOfContext)
         {
-            if(!ContextSinks.TryGetValue(typeOfContext, out ISink sink))
+            if(!Instance.ContextSinks.TryGetValue(typeOfContext, out ISink sink))
             {
-                ContextSinks[typeOfContext] = sink = DefaultMessageSink.Instance;
+                Instance.ContextSinks[typeOfContext] = sink = DefaultMessageSink.Instance;
             }
             return sink;
         }
         internal static void RegisterLoggerSink<TLog>(ISink sink)
         {
-            if (LoggerSinks.TryGetValue(typeof(TLog), out ISink oldSink)
+            if (Instance.LoggerSinks.TryGetValue(typeof(TLog), out ISink oldSink)
                 && oldSink != DefaultMessageSink.Instance && oldSink != sink)
             {
                 Trace.Write($"Competing sink attempted for {typeof(TLog)}, {sink} when {oldSink} already used.");
             }
-            LoggerSinks[typeof(TLog)] = sink;
+            Instance.LoggerSinks[typeof(TLog)] = sink;
         }
 
-        private static IMessageSource GetMessageSource(Type type)
-        {
-            return DefaultMessageSource.Instance;
-        }
+        private IMessageSource GetMessageSource(Type type)
+            => GlobalSource ?? DefaultMessageSource.Instance;
 
         public static void RegisterContextSink<TContext>(ISink sink)
         {
-            ContextSinks[typeof(TContext)] = sink;
+            Instance.ContextSinks[typeof(TContext)] = sink;
         }
 
         private static void DoLogging(IFakeObjectCall call, LoggerContext context)
         {
             try
             {
-                var messageSource = context.MessageSource ?? GetMessageSource(context.LogType);
+                var messageSource = context.MessageSource ?? Instance.GetMessageSource(context.LogType);
                 var msgCfg = messageSource.GetMessageConfiguration(call.Method.Name);
                 var formattedMsg = msgCfg.Text;
                 var level = msgCfg.Level;
@@ -113,5 +118,31 @@ namespace InterfaceLogger
                 Trace.Write(e);
             }
         }
+
+        public TLogger Log<TLogger>(TLogger logger, string msg, params object[] options)
+        {
+            var sink = GlobalSink;
+            var messageSource = GetMessageSource(typeof(TLogger));
+            var msgInfo = messageSource.GetMessageConfiguration(msg);
+            var formattedMsg = msgInfo.Text;
+            try
+            {
+                formattedMsg = string.Format(msgInfo.Text, options);
+            }
+            catch (Exception e)
+            {
+                formattedMsg += " -- Format error: " + e.Message;
+            }
+
+            sink.Write(msgInfo.Level, formattedMsg, null, options);
+
+            return logger;
+        }
+
+        public static LoggerManager Instantiate(ISink sink, IMessageSource source)
+            => new() {
+                GlobalSink = sink,
+                GlobalSource = source,
+            };
     }
 }

@@ -9,9 +9,9 @@ namespace Demo
         internal class Generated_IDemoLogger : InterfaceLogger.AotLogger<IDemoLogger>, IDemoLogger
         {
             public void Test()
-                => base.Log("Test");
+                => base.Log(this, "Test");
             public void TestNotInResource()
-                => base.Log("TestNotInResource");
+                => base.Log(this, "TestNotInResource");
         }
     }
 }

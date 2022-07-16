@@ -9,7 +9,7 @@ namespace InterfaceLogger.Generator.Tests.Data.Return
         public class Generated_IReturnLogger : InterfaceLogger.AotLogger<IReturnLogger>, IReturnLogger
         {
             public IReturnLogger Example(string message, DateTime? dt)
-                => base.Log("Example", message, dt);
+                => base.Log(this, "Example", message, dt);
         }
     }
 }
