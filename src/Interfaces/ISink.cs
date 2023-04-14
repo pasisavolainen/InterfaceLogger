@@ -1,10 +1,8 @@
-﻿using System;
-using InterfaceLogger.Logging;
+﻿using InterfaceLogger.Logging;
 
-namespace InterfaceLogger.Interfaces
+namespace InterfaceLogger.Interfaces;
+
+public interface ISink
 {
-    public interface ISink
-    {
-        void Write(LogLevel level, string msg, Exception e, params object[] formatParams);
-    }
+    void Write(LogLevel level, string msg, Exception e, params object[] formatParams);
 }

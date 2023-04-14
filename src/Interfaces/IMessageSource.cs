@@ -1,7 +1,6 @@
-﻿namespace InterfaceLogger.Interfaces
+﻿namespace InterfaceLogger.Interfaces;
+
+public interface IMessageSource
 {
-    public interface IMessageSource
-    {
-        IMessageConfiguration GetMessageConfiguration(string name);
-    }
+    IMessageConfiguration GetMessageConfiguration(string name);
 }

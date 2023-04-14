@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-	<TargetFramework>net6</TargetFramework>
+    <TargetFramework>net6</TargetFramework>
     <RootNamespace>InterfaceLoggerDemo</RootNamespace>
+    <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +12,7 @@
     <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
 
     <!-- this should be coming from local nuget repo -->
-    <PackageReference Include="InterfaceLogger.AOT" Version="1.0.6" />
+    <PackageReference Include="InterfaceLogger.AOT" Version="1.0.8" />
   </ItemGroup>
 
   <ItemGroup>

@@ -29,9 +29,9 @@ public class SourceGenTests
         var output = GetGeneratedOutput(source);
 
         // assert
-        return Verify(output)
+        return Verify(output, extension: "cs")
                 .UseDirectory("Data")
                 .UseFileName(fileName)
-                .UseExtension("cs");
+                ;
     }
 }

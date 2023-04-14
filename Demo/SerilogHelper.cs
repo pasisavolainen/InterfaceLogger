@@ -1,15 +1,14 @@
 ﻿using Serilog;
 
-namespace Demo
+namespace InterfaceLoggerDemo;
+
+internal class SerilogHelper
 {
-    internal class SerilogHelper
+    static public void SpinUpSerilog()
     {
-        static public void SpinUpSerilog()
-        {
-            var log = new LoggerConfiguration()
-                .WriteTo.ColoredConsole(outputTemplate: "{Timestamp:HH:mm} [{Level}] ({Name:l}) {Message}{NewLine}{Exception}")
-                .CreateLogger();
-            Log.Logger = log;
-        }
+        var log = new LoggerConfiguration()
+            .WriteTo.ColoredConsole(outputTemplate: "{Timestamp:HH:mm} [{Level}] ({Name:l}) {Message}{NewLine}{Exception}")
+            .CreateLogger();
+        Log.Logger = log;
     }
 }

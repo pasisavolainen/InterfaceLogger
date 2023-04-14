@@ -1,10 +1,9 @@
 ﻿using InterfaceLogger.Logging;
 
-namespace InterfaceLogger.Interfaces
+namespace InterfaceLogger.Interfaces;
+
+public interface IMessageConfiguration
 {
-    public interface IMessageConfiguration
-    {
-        string Text { get; }
-        LogLevel Level { get; }
-    }
+    string Text { get; }
+    LogLevel Level { get; }
 }
