@@ -1,37 +1,32 @@
-﻿using InterfaceLogger;
-using InterfaceLogger.Logging;
-using InterfaceLogger.Sources;
-using InterfaceLoggerTests.Model;
+﻿using InterfaceLogger.Sources;
 using InterfaceLoggerTests.Properties;
-using Xunit;
 
-namespace InterfaceLoggerTests
+namespace InterfaceLoggerTests;
+
+public class ResXSource
 {
-    public class ResXSource
+    [Fact]
+    public void ResXWorks()
     {
-        [Fact]
-        public void ResxWorks()
-        {
-            var sink = new TestSimpleSink();
-            var logger = LoggerManager.Get<IBasicsLog>
-                    (sink, ResXLogSource.FromManager(Resources.ResourceManager));
+        var sink = new TestSimpleSink();
+        var logger = LoggerManager.Get<IBasicsLog>
+                (sink, ResXLogSource.FromManager(Resources.ResourceManager));
 
-            logger.Message();
+        logger.Message();
 
-            Assert.Equal(Resources.Message, sink.FirstMessage());
-        }
+        Assert.Equal(Resources.Message, sink.FirstMessage());
+    }
 
-        [Fact]
-        public void ResXUsesLevel()
-        {
-            var sink = new TestComplexSink();
-            var logger = LoggerManager.Get<IBasicsLog>
-                    (sink, ResXLogSource.FromManager(Resources.ResourceManager));
+    [Fact]
+    public void ResXUsesLevel()
+    {
+        var sink = new TestComplexSink();
+        var logger = LoggerManager.Get<IBasicsLog>
+                (sink, ResXLogSource.FromManager(Resources.ResourceManager));
 
-            logger.MessageWithPriority();
+        logger.MessageWithPriority();
 
-            Assert.Equal(Resources.MessageWithPriority, sink.FirstMessage.Text);
-            Assert.Equal(LogLevel.Fatal, sink.FirstMessage.Level);
-        }
+        Assert.Equal(Resources.MessageWithPriority, sink.FirstMessage.Text);
+        Assert.Equal(LogLevel.Fatal, sink.FirstMessage.Level);
     }
 }

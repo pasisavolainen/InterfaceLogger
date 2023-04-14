@@ -1,38 +1,37 @@
-﻿namespace InterfaceLoggerTests
+﻿namespace InterfaceLoggerTests;
+
+[UsesVerify]
+public class SourceGenTests
 {
-    [UsesVerify]
-    public class SourceGenTests
+    [Fact]
+    public void GeneratorIsNotTriggered()
     {
-        [Fact]
-        public void GeneratorIsNotTriggered()
-        {
-            var source = @"namespace foo { class c { void m() {} } }";
+        var source = @"namespace foo { class c { void m() {} } }";
 
-            // act
-            var output = GetGeneratedOutput(source);
+        // act
+        var output = GetGeneratedOutput(source);
 
-            Verify(output);
-        }
+        Verify(output);
+    }
 
-        [Theory,
-            InlineData("SingleDemoLoggerFactory"),
-            InlineData("DemoBroken"),
-            InlineData("EmptyDemoLoggerFactory"),
-            InlineData("Parameters"),
-            InlineData("Return"),
-        ]
-        public Task Compilations(string fileName)
-        {
-            var source = FileFromData($"{fileName}.cs");
+    [Theory,
+        InlineData("SingleDemoLoggerFactory"),
+        InlineData("DemoBroken"),
+        InlineData("EmptyDemoLoggerFactory"),
+        InlineData("Parameters"),
+        InlineData("Return"),
+    ]
+    public Task Compilations(string fileName)
+    {
+        var source = FileFromData($"{fileName}.cs");
 
-            // act
-            var output = GetGeneratedOutput(source);
+        // act
+        var output = GetGeneratedOutput(source);
 
-            // assert
-            return Verify(output)
-                    .UseDirectory("Data")
-                    .UseFileName(fileName)
-                    .UseExtension("cs");
-        }
+        // assert
+        return Verify(output)
+                .UseDirectory("Data")
+                .UseFileName(fileName)
+                .UseExtension("cs");
     }
 }

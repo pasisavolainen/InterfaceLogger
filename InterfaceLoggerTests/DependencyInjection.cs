@@ -1,66 +1,62 @@
-﻿using InterfaceLogger;
-using InterfaceLoggerTests.Model;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace InterfaceLoggerTests
+namespace InterfaceLoggerTests;
+
+public class InjectedShim
 {
-    public class InjectedShim
+    public ISemanticLogger<IBasicsLog> Log { get; }
+    public InjectedShim(ISemanticLogger<IBasicsLog> log)
     {
-        public ISemanticLogger<IBasicsLog> Log { get; }
-        public InjectedShim(ISemanticLogger<IBasicsLog> log)
-        {
-            Log = log;
-        }
+        Log = log;
     }
-    public class InjectedBase
+}
+public class InjectedBase
+{
+    public IBasicsLog Log { get; }
+    public InjectedBase(IBasicsLog log)
     {
-        public IBasicsLog Log { get; }
-        public InjectedBase(IBasicsLog log)
-        {
-            Log = log;
-        }
+        Log = log;
+    }
+}
+
+public class DependencyInjection
+{
+    [Fact(DisplayName = "Inject logger using generic shim")]
+    public void UsingShim()
+    {
+        // arrange
+        var srvCollection = new ServiceCollection();
+        srvCollection.AddScoped(typeof(ISemanticLogger<>), typeof(LogShim<>));
+        srvCollection.AddScoped<InjectedShim>();
+
+        // act
+        var srvProvider = srvCollection.BuildServiceProvider();
+        var injected = srvProvider.GetRequiredService<InjectedShim>();
+
+        // assert
+        Assert.NotNull(injected.Log);
+        Assert.NotNull(injected.Log.Semantic);
+        injected.Log.Semantic.Message();
     }
 
-    public class DependencyInjection
+    [Fact(DisplayName = "Inject logger using factory")]
+    public void UsingFactory()
     {
-        [Fact(DisplayName = "Inject logger using generic shim")]
-        public void UsingShim()
-        {
-            // arrange
-            var srvCollection = new ServiceCollection();
-            srvCollection.AddScoped(typeof(ISemanticLogger<>), typeof(LogShim<>));
-            srvCollection.AddScoped<InjectedShim>();
+        // arrange
+        var testSink = new TestSimpleSink();
+        var srvCollection = new ServiceCollection();
+        srvCollection.AddScoped<IBasicsLog>(sp => LogFactory.BuildLogger<IBasicsLog>(testSink));
+        srvCollection.AddScoped<InjectedBase>();
 
-            // act
-            var srvProvider = srvCollection.BuildServiceProvider();
-            var injected = srvProvider.GetRequiredService<InjectedShim>();
+        var srvProvider = srvCollection.BuildServiceProvider();
 
-            // assert
-            Assert.NotNull(injected.Log);
-            Assert.NotNull(injected.Log.Semantic);
-            injected.Log.Semantic.Message();
-        }
+        // act
+        var injected = srvProvider.GetRequiredService<InjectedBase>();
+        Assert.NotNull(injected);
 
-        [Fact(DisplayName = "Inject logger using factory")]
-        public void UsingFactory()
-        {
-            // arrange
-            var testSink = new TestSimpleSink();
-            var srvCollection = new ServiceCollection();
-            srvCollection.AddScoped<IBasicsLog>(sp => LogFactory.BuildLogger<IBasicsLog>(testSink));
-            srvCollection.AddScoped<InjectedBase>();
+        injected.Log.Message();
 
-            var srvProvider = srvCollection.BuildServiceProvider();
-
-            // act
-            var injected = srvProvider.GetRequiredService<InjectedBase>();
-            Assert.NotNull(injected);
-
-            injected.Log.Message();
-
-            // assert
-            Assert.Single(testSink.Messages);
-        }
+        // assert
+        Assert.Single(testSink.Messages);
     }
 }
