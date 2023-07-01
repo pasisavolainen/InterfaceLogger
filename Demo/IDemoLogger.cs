@@ -11,7 +11,7 @@ public interface IDemoLogger
     IDemoLogger TestWithDemoReturn();
 }
 
-public  partial class DemoLoggirFactory : ILoggerFactory
+public partial class DemoLoggirFactory : ILoggerFactory
 {
     public partial IDemoLogger DemoLogger();
 }

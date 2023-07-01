@@ -1,22 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <LangVersion>10</LangVersion>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>10</LangVersion>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <Compile Include="../InterfaceLogger.Generator.Tests/Data/*.cs" />
-        <Compile Remove="../InterfaceLogger.Generator.Tests/Data/*.received.cs" />
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../InterfaceLogger.Generator.Tests/Data/*.cs" />
+    <Compile Remove="../InterfaceLogger.Generator.Tests/Data/*.received.cs" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <!-- VerifyTests.Verify produces "emptyString" for empty file comparisons and that doesn't compile -->
-        <Compile Remove="..\InterfaceLogger.Generator.Tests\Data\EmptyDemoLoggerFactory.verified.cs" />
-    </ItemGroup>
+  <ItemGroup>
+    <!-- VerifyTests.Verify produces "emptyString" for empty file comparisons and that doesn't compile -->
+    <Compile Remove="..\InterfaceLogger.Generator.Tests\Data\EmptyDemoLoggerFactory.verified.cs" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\src\InterfaceLogger.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\InterfaceLogger.csproj" />
+  </ItemGroup>
 
 </Project>

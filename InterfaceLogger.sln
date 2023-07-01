@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceLoggerTests", "Int
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2D933683-8336-41ED-AE76-8351BF7020E9}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		LICENSE = LICENSE
 		nuget.config = nuget.config
@@ -27,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceLogger.AOT", "Inte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceLogger.Generator.Tests", "InterfaceLogger.Generator.Tests\InterfaceLogger.Generator.Tests.csproj", "{F9163017-350E-4635-BFCA-9138ED7C26E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterfaceLogger.Generator.Tests.Compilation", "InterfaceLogger.Generator.Tests.Compilation\InterfaceLogger.Generator.Tests.Compilation.csproj", "{7E62C621-036E-4C7D-B0B0-469DFCE2EB21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceLogger.Generator.Tests.Compilation", "InterfaceLogger.Generator.Tests.Compilation\InterfaceLogger.Generator.Tests.Compilation.csproj", "{7E62C621-036E-4C7D-B0B0-469DFCE2EB21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
